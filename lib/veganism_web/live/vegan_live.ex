@@ -2,16 +2,36 @@ defmodule VeganismWeb.VeganLive do
   use VeganismWeb, :live_view
 
   def mount(_params, _session, socket) do
-    socket = assign(socket, :brightness, 10)
+    socket =
+      assign(socket,
+        zip: "",
+        stores: [],
+        loading: false
+      )
+
     {:ok, socket}
   end
 
   def render(assigns) do
     ~L"""
-    <h1>Front Porch Light</h1>
-    <div id="light">
-      <h1> Some stuff </h1>
+    <h1>Find Foods</h1>
+    <div id="search">
+      <div class="stores">
+        <form phx-submit="zip-search">
+          <input type="text" name="food" value=""
+                placeholder="Food"
+                autofocus autocomplete="off"
+                <%= if @loading, do: "readonly" %> />
 
+
+          <button type="submit">submit</button>
+        </form>
+        <%= if @loading do %>
+          <div class="loader">
+            Loading...
+          </div>
+        <% end %>
+      </div>
     </div>
     """
   end
